@@ -47,26 +47,15 @@ from PIL import Image
 class cancer_dataset(Dataset):
     def __init__(self, root_dir, transform, data_type=None):
         self.transform = transform
-        
-        # Path to the directory containing images
         path_of_data = os.path.join(root_dir, "data_sample/data_sample")
-        
-        # Get list of filenames in the directory
         get_file_names = os.listdir(path_of_data)
-        
-        # Load labels.csv
         path2label = os.path.join(root_dir, 'labels.csv')
-        
-        # Full path to each image
         self.full_filenames = [os.path.join(path_of_data, f) for f in get_file_names]
-        
-        # Load the CSV containing labels
         get_label = pd.read_csv(path2label)
         
-        # Set 'id' as the index for easy access
         get_label.set_index("id", inplace=True)
         
-        # Subsetting based on data_type
+        
         if data_type == "train":
             self.labels = [get_label.loc[img_files[:-4]].values[0] for img_files in get_file_names][0:3608]
             self.full_filenames = [os.path.join(path_of_data, f) for f in get_file_names][0:2608]
@@ -83,18 +72,18 @@ class cancer_dataset(Dataset):
             print("testing_dataset")
             
         else:
-            # Here `get_label` is used instead of `labels_df`
+            
             self.labels = [get_label.loc[filename[:-4]].values[0] for filename in get_file_names]
     
     def __len__(self):
         return len(self.full_filenames)
         
     def __getitem__(self, idx):
-        # Open the image file and apply the transform
+        
         img = Image.open(self.full_filenames[idx])
         img = self.transform(img)
         
-        # Return the transformed image and its corresponding label
+    
         return img, self.labels[idx]
 
         
@@ -114,7 +103,7 @@ composed_train = transforms.Compose([
                                transforms.Normalize(mean, std)
                                ])
 
-# this transformation is for valiadationa and test sets
+
 composed= transforms.Compose([
                                transforms.Resize((224, 224)),
                                transforms.ToTensor(),
@@ -172,17 +161,9 @@ def imshow(inp: Tensor) -> None:
 
 
 
-    
-    
-
-
-
-
-
-
 import torch
 from torch.utils.data import DataLoader
-# ... other imports
+
 
 def get_data_loaders(batch_size=10, num_workers=2):
     data_dir = "./"
@@ -201,15 +182,6 @@ def get_data_loaders(batch_size=10, num_workers=2):
 
 
 
-    
-
-    
-    
-
-
-# Define classes
-num_classes = 2
-print("done")
     
 
 
