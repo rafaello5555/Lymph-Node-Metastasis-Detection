@@ -124,7 +124,7 @@ composed= transforms.Compose([
         
 
 
-# This function will allow us to easily plot tensor data 
+
 from numpy import clip , array
 from matplotlib import pyplot as plt
 from torch import Tensor
@@ -171,6 +171,9 @@ def get_data_loaders(batch_size=10, num_workers=2):
     training_set = cancer_dataset(data_dir, transform=composed_train, data_type="train")
     validation_set = cancer_dataset(data_dir, transform=composed, data_type="val")
     test_set = cancer_dataset(data_dir, transform=composed, data_type="test")
+    print(f'training dataset length: {len(training_set)}')
+    print(f'validation dataset length: {len(validation_set)}')
+    print(f'test dataset length: {len(test_set)}')
     
     train_loader = DataLoader(training_set, batch_size=batch_size, shuffle=True, num_workers=num_workers)
     val_loader = DataLoader(validation_set, batch_size=batch_size, shuffle=False, num_workers=num_workers)

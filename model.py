@@ -1,18 +1,35 @@
 # train.py
-from load_data import train_loader
-from tqdm import tqdm
 
-# Define the number of epochs
-n_epochs = 10  # Set this to the desired number of epochs
 
-for epoch in range(n_epochs):
-    total_loss = 0.0
 
-    # Correctly iterate over the train_loader
-    for i, data in enumerate(tqdm(train_loader)):
-        images, labels = data  # Unpack images and labels from the data
-        print(f"Batch {i}: Image shape: {images.shape}, Labels: {labels}")
-        # Here you would include your training step, loss calculation, etc.
-        # total_loss += your_loss_function(...)
 
-    print(f"Epoch {epoch + 1}/{n_epochs}, Loss: {total_loss}")
+
+import torch
+from torch import nn
+from torch.nn import CrossEntropyLoss
+from torch.optim import Adam
+from torchvision import models
+
+# Hyperparameters
+batch_size = 30
+lr = 3e-4
+n_epochs = 5
+num_classes = 2
+
+def initialize_model():
+    # Load pretrained model
+    model = models.resnet34(pretrained=True)
+
+    # Freeze layers
+    for param in model.parameters():
+        param.requires_grad = False
+
+    # Modify the last layer
+    num_ftrs = model.fc.in_features
+    model.fc = nn.Linear(num_ftrs, num_classes)
+
+    # Define loss and optimizer
+    criterion = CrossEntropyLoss()
+    optimizer = Adam(model.parameters(), lr=lr)
+    
+    return model, criterion, optimizer
