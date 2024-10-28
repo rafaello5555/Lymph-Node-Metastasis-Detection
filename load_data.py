@@ -17,8 +17,7 @@ from PIL import Image
 
 #Load leabels of data
 
-labels_df = pd.read_csv("labels.csv")
-print(labels_df.head())
+
 
 
 
