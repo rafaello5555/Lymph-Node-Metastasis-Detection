@@ -19,7 +19,7 @@ if __name__ == '__main__':
             inputs, labels = data  
             optimizer.zero_grad()
             
-            outputs = initialize_model(inputs)
+            outputs = model(inputs)
             
             loss = criterion(outputs, labels)
             loss.backward()
@@ -27,6 +27,10 @@ if __name__ == '__main__':
             optimizer.step()
             
             running_loss += loss.item()
+            
+            if i % 100 == 99:
+                tqdm.write('[%d, %5d] loss: %.3f' % (epoch+1, i+1, running_loss/100))
+                running_loss = 0.0
            
             
 
